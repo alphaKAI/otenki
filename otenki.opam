@@ -1,0 +1,16 @@
+opam-version: "1.2"
+maintainer: "alpha.kai.net@alpha-kai-net.info"
+authors: ["Akihiro Shoji"]
+license: "MIT"
+build: [["dune" "build" "--only-packages" "%{name}%" "--root" "." "-j" jobs "@install"]]
+depends: [
+  "core"
+  "ppx_deriving"
+  "ppx_jane"
+  "sexplib"
+  "camomile"
+  "lambdasoup"
+  "conf-gnutls"
+  "ocamlnet"
+  "re"
+]
