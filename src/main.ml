@@ -1,4 +1,4 @@
-open WeatherForecastManager
+open WeatherForecast
 open Core
 
 let tsukuba_url = "https://tenki.jp/forecast/3/11/4020/8220/3hours.html"
