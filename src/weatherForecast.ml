@@ -23,7 +23,7 @@ let serialize_wf = sexp_of_weatherForcast >> Sexp.to_string
 let deserialize_wf = Sexp.of_string >> weatherForcast_of_sexp
 
 let zone = Time.Zone.find_exn "tyo"
-let time_to_string_as_jst = Time.to_string_abs_trimmed ~zone:zone
+let time_to_string_as_jst = Time.to_string_abs_trimmed ~zone
 
 open Nethttp_client.Convenience
 
@@ -41,7 +41,7 @@ let fetch_weatherForcast url =
     let (dd, hh, mm) =
       let dhm = Re.Pcre.extract ~rex:(Re.Pcre.regexp "(\\d+)日(\\d+):(\\d+)発表") updated_time_str in
       (dhm.(1) |> int_of_string, dhm.(2) |> int_of_string, dhm.(3) |> int_of_string) in
-    let today = Date.today ~zone:zone in
+    let today = Date.today ~zone in
     let (year, month) = (Date.year today, Date.month today |> Month.to_int) in
     let time_str = Printf.sprintf "%d-%d-%d %02d:%02d" year month dd hh mm in
     Time.of_string time_str in
@@ -125,8 +125,8 @@ let print_weatherForcast ?(show_opts=show_ALL) ?(conky=false) ?(days=2) wf =
                            |> List.fold ~init:0 ~f:(fun x y -> Int.max x (get_string_width y))) in
 
   Printf.printf "%s\n" (str_repeat "-" (max_width + (max_unit_width + 1) * 8));
-  let date = Time.to_date ~zone:zone wf.updated_time in
-  Printf.printf "%sの天気 (%d月%d日 %s 発表)\n" wf.point_name (Date.month date |> Month.to_int) (Date.day date) (Time.format wf.updated_time "%H:%M" ~zone:zone);
+  let date = Time.to_date ~zone wf.updated_time in
+  Printf.printf "%sの天気 (%d月%d日 %s 発表)\n" wf.point_name (Date.month date |> Month.to_int) (Date.day date) (Time.format wf.updated_time "%H:%M" ~zone);
   Printf.printf "%s" (str_repeat " " max_width);
   ["03時"; "06時"; "09時"; "12時"; "15時"; "18時"; "21時"; "24時"]
   |> List.iter ~f:(fun l -> Printf.printf "%s" (center l (max_unit_width + 1)));
