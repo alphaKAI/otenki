@@ -23,15 +23,15 @@ class color (col_str : string) =
     method convert_to_hex = Printf.sprintf "#%02X%02X%02X" (List.nth_exn col 0) (List.nth_exn col 1) (List.nth_exn col 2)
   end
 
-let style_RESET = 1 lsl 0
-let style_BOLD =  1 lsl 1
-let style_WEAKEN = 1 lsl 2
-let style_ITALIC = 1 lsl 3
-let style_UNDERSCORE = 1 lsl 4
-let style_SLOW_BLINK = 1 lsl 5
-let style_FAST_BLINK = 1 lsl 6
-let style_INVERT = 1 lsl 7
-let style_INVISIBLE = 1 lsl 8
+let style_RESET         = 1 lsl 0
+let style_BOLD          = 1 lsl 1
+let style_WEAKEN        = 1 lsl 2
+let style_ITALIC        = 1 lsl 3
+let style_UNDERSCORE    = 1 lsl 4
+let style_SLOW_BLINK    = 1 lsl 5
+let style_FAST_BLINK    = 1 lsl 6
+let style_INVERT        = 1 lsl 7
+let style_INVISIBLE     = 1 lsl 8
 let style_STRIKETHROUGH = 1 lsl 9
 
 let get_string_width =

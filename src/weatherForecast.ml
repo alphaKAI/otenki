@@ -23,7 +23,6 @@ let serialize_wf = sexp_of_weatherForcast >> Sexp.to_string
 let deserialize_wf = Sexp.of_string >> weatherForcast_of_sexp
 
 let zone = Time.Zone.find_exn "tyo"
-let time_to_string_as_jst = Time.to_string_abs_trimmed ~zone
 
 open Nethttp_client.Convenience
 
