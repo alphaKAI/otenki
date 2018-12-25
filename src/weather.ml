@@ -26,7 +26,7 @@ type weather = {
   probability_of_rains: int List.t;
   amount_of_rains: float List.t;
   humidities: int List.t;
-}
+} [@@deriving sexp]
 
 exception PrintError
 

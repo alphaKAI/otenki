@@ -3,8 +3,8 @@ open Weather
 open MyUtil
 open Core
 
-let show_WEATHER            = 1 lsl 0
-let show_TEMPERATURE        = 1 lsl 1
+let show_WEATHER             = 1 lsl 0
+let show_TEMPERATURE         = 1 lsl 1
 let show_PROBABILITY_OF_RAIN = 1 lsl 2
 let show_AMOUNT_OF_RAIN      = 1 lsl 3
 let show_HUMIDITY            = 1 lsl 4
@@ -16,7 +16,11 @@ type weatherForcast = {
   weathers: weather List.t;
   updated_time: Time.t;
   point_name: string;
-}
+  fetch_time: Time.t;
+} [@@deriving sexp]
+
+let serialize_wf = sexp_of_weatherForcast >> Sexp.to_string
+let deserialize_wf = Sexp.of_string >> weatherForcast_of_sexp
 
 let zone = Time.Zone.find_exn "tyo"
 let time_to_string_as_jst = Time.to_string_abs_trimmed ~zone:zone
@@ -110,6 +114,7 @@ let fetch_weatherForcast url =
     weathers = weathers;
     updated_time = updated_time;
     point_name = point_name;
+    fetch_time = Time.now ();
   }
 
 let print_weatherForcast ?(show_opts=show_ALL) ?(conky=false) ?(days=2) wf =
@@ -143,40 +148,20 @@ let print_weatherForcast ?(show_opts=show_ALL) ?(conky=false) ?(days=2) wf =
         print_humidity w max_width ~unit_width:max_unit_width ~conky;
       Printf.printf "%s\n" (str_repeat "=" (max_width + (max_unit_width + 1) * 8)))
 
+let serialized_file_name = "otenki.dump"
 
-(*
-let (>>) f g x = g (f x)
-let read_lines_into_string = In_channel.read_lines >> List.fold ~init:"" ~f:(fun a b -> a ^ b ^ "\n")
+let fetch_weatherForcast_cache_aware ~url ~days ~conky =
+  let print_wf_with_update_cache () =
+    let wf = fetch_weatherForcast url in
+    print_weatherForcast wf ~days ~conky;
+    Out_channel.write_all serialized_file_name ~data:(serialize_wf wf) in
 
-type user = {
-  name: string;
-  age: int;
-  handle: string;
-} [@@deriving sexp, show]
-
-let gen_user name age handle =
-  {
-    name = name;
-    age = age;
-    handle = handle;
-  }
-
-let (>>) f g x = g (f x)
-
-let serialize = sexp_of_user >> Sexp.to_string
-
-let deserialize = Sexp.of_string >> user_of_sexp
-
-let serialized_test () =
-  let user = gen_user "Akihiro Shoji" 21 "alphaKAI" in
-  Printf.printf "user: %s\n" (show_user user);
-  let serialized = serialize user in
-  Out_channel.write_all "serialized" ~data:serialized;
-  Printf.printf "ok\n"
-
-let deserialize_test () =
-  let serialized = read_lines_into_string "serialized" in
-  let user = deserialize serialized in
-  Printf.printf "user: %s\n" (show_user user)
-*)
-
+  if Sys.file_exists_exn serialized_file_name then
+    let wf = read_lines_into_string serialized_file_name
+             |> deserialize_wf in
+    if wf.url <> url || (Time.add wf.fetch_time (Time.Span.of_hr 1.0) <= Time.now ()) then
+      print_wf_with_update_cache ()
+    else
+      print_weatherForcast wf ~days ~conky;
+  else
+    print_wf_with_update_cache ()
