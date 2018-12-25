@@ -64,7 +64,7 @@ let fetch_weatherForcast url =
         let is_past =
           range 2 9
           |> List.map ~f:(fun i ->
-              let selector = selector_base ^ (Printf.sprintf " > tr:nth-child(4) > td:nth-child(%d) > p:nth-child(2)" i) in
+              let selector = selector_base ^ (" > tr:nth-child(4) > td:nth-child(%d) > p:nth-child(2)" %% i) in
               soup $ selector |> classes
               |> List.find ~f:(fun x -> x = "past")
               |> function
@@ -75,28 +75,28 @@ let fetch_weatherForcast url =
         let temperatures =
           range 1 8
           |> List.map ~f:(fun i ->
-              let selector = selector_base ^ (Printf.sprintf " > tr:nth-child(6) > td:nth-child(%d)" i) in
+              let selector = selector_base ^ (" > tr:nth-child(6) > td:nth-child(%d)" %% i) in
               List.nth_exn (soup $ selector |> texts) 0
               |> float_of_string) in
 
         let probability_of_rains =
           range 2 9
           |> List.map ~f:(fun i ->
-              let selector = selector_base ^ (Printf.sprintf " > tr:nth-child(7) > td:nth-child(%d)" i) in
+              let selector = selector_base ^ (" > tr:nth-child(7) > td:nth-child(%d)" %% i) in
               List.nth_exn (soup $ selector |> texts) 0
               |> int_of_string) in
 
         let amount_of_rains =
           range 1 8
           |> List.map ~f:(fun i ->
-              let selector = selector_base ^ (Printf.sprintf " > tr:nth-child(9) > td:nth-child(%d)" i) in
+              let selector = selector_base ^ (" > tr:nth-child(9) > td:nth-child(%d)" %% i) in
               List.nth_exn (soup $ selector |> texts) 0
               |> float_of_string) in
 
         let humidities =
           range 2 9
           |> List.map ~f:(fun i ->
-              let selector = selector_base ^ (Printf.sprintf " > tr:nth-child(10) > td:nth-child(%d)" i) in
+              let selector = selector_base ^ (" > tr:nth-child(10) > td:nth-child(%d)" %% i) in
               List.nth_exn (soup $ selector |> texts) 0
               |> int_of_string) in
 
