@@ -134,16 +134,16 @@ let print_weatherForcast ?(show_opts=show_ALL) ?(conky=false) ?(days=2) wf =
   Printf.printf "%s\n" (str_repeat "=" (max_width + (max_unit_width + 1) * 8));
   List.slice wf.weathers 0 days
   |> List.iter ~f:(fun w ->
-      let no_color = show_opts land show_WITHOUT_COLORS <> 0 in
-      if show_opts land show_WEATHER <> 0 then
+      let no_color = has_opt show_opts show_WITHOUT_COLORS in
+      if has_opt show_opts show_WEATHER then
         print_weather w max_width ~unit_width:max_unit_width ~no_color ~conky;
-      if show_opts land show_TEMPERATURE <> 0 then
+      if has_opt show_opts show_TEMPERATURE then
         print_temperature w max_width ~unit_width:max_unit_width ~no_color ~conky;
-      if show_opts land show_PROBABILITY_OF_RAIN <> 0 then
+      if has_opt show_opts show_PROBABILITY_OF_RAIN then
         print_probability_of_rain w max_width ~unit_width:max_unit_width ~conky;
-      if show_opts land show_AMOUNT_OF_RAIN <> 0 then
+      if has_opt show_opts show_AMOUNT_OF_RAIN then
         print_amount_of_rain w max_width ~unit_width:max_unit_width ~conky;
-      if show_opts land show_HUMIDITY <> 0 then
+      if has_opt show_opts show_HUMIDITY then
         print_humidity w max_width ~unit_width:max_unit_width ~conky;
       Printf.printf "%s\n" (str_repeat "=" (max_width + (max_unit_width + 1) * 8)))
 

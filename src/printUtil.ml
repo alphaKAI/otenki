@@ -1,4 +1,5 @@
 open Core_kernel
+open MyUtil
 
 let (//=) a b = a := !a / b
 
@@ -66,7 +67,7 @@ let center ?(ljust=true) str width =
     lr ^ str ^ ll
 
 let change_style ?(conky=false) style_opts out =
-  if style_opts land style_RESET <> 0 then
+  if has_opt style_opts style_RESET then
     if conky then
       Printf.fprintf out "${color}${font}"
     else
@@ -82,8 +83,8 @@ let change_style ?(conky=false) style_opts out =
     style_INVERT;
     style_INVISIBLE;
     style_STRIKETHROUGH;
-  ] |> List.iteri ~f:(fun i v ->
-      if style_opts land v <> 0 then
+  ] |> List.iteri ~f:(fun i opt ->
+      if has_opt style_opts opt then
         cmd := !cmd ^ (Printf.sprintf "%d;" i));
   let cmd = String.slice !cmd 0 (-1) in
   Printf.fprintf out "%sm" cmd
