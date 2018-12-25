@@ -103,5 +103,5 @@ S /Users/alphakai/.opam/default/lib/variantslib
 S /usr/local/lib/ocaml
 S /usr/local/lib/ocaml/threads
 S .
-FLG -ppx '/Users/alphakai/dotfiles/myscripts/.myscripts/tenki/otenki/_build/default/.ppx/7d3e6d448d01d4dcd07e42331663687e/ppx.exe --as-ppx'
+FLG -ppx '/Users/alphakai/dotfiles/myscripts/.myscripts/otenki/_build/default/.ppx/7d3e6d448d01d4dcd07e42331663687e/ppx.exe --as-ppx'
 FLG -w @a-4-29-40-41-42-44-45-48-58-59-60-40 -strict-sequence -strict-formats -short-paths -keep-locs

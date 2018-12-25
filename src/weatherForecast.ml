@@ -149,12 +149,15 @@ let print_weatherForcast ?(show_opts=show_ALL) ?(conky=false) ?(days=2) wf =
 
 let serialized_file_name = "otenki.dump"
 
-let fetch_weatherForcast_cache_aware ~url ~days ~conky =
+let fetch_weatherForcast_cache_aware ~url ~days ~conky ~update =
   let print_wf_with_update_cache () =
     let wf = fetch_weatherForcast url in
     print_weatherForcast wf ~days ~conky;
     Out_channel.write_all serialized_file_name ~data:(serialize_wf wf) in
 
+  if update then
+    print_wf_with_update_cache ()
+  else
   if Sys.file_exists_exn serialized_file_name then
     let wf = read_lines_into_string serialized_file_name
              |> deserialize_wf in
