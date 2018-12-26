@@ -92,7 +92,7 @@ let change_style ?(conky=false) style_opts out =
 
 let change_color ?(weaken=false) ?(conky=false) col out =
   let color = col#get_col in
-  let k = if weaken then 0.5 else 1.0 in
+  let k = if weaken then 0.6 else 1.0 in
   let (r, g, b) = (List.nth_exn color 0 |> float_of_int, List.nth_exn color 1 |> float_of_int, List.nth_exn color 2 |> float_of_int) in
   let (r, g, b) = (r *. k |> int_of_float, g *. k |> int_of_float, b *. k |> int_of_float) in
   let cmd =
