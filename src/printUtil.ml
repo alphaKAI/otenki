@@ -75,6 +75,7 @@ let change_style ?(conky=false) style_opts out =
   let cmd = ref "\x1b[" in
   [
     style_RESET;
+    style_BOLD;
     style_WEAKEN;
     style_ITALIC;
     style_UNDERSCORE;
