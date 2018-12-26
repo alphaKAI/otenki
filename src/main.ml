@@ -4,8 +4,6 @@ open Core
 let tsukuba_url = "https://tenki.jp/forecast/3/11/4020/8220/3hours.html"
 
 let fetch_and_print_wf ~url ~days ~conky () =
-  (*fetch_weatherForcast url
-    |> print_weatherForcast ~conky ~days*)
   fetch_weatherForcast_cache_aware ~url ~days ~conky
 
 
