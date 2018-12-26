@@ -119,9 +119,9 @@ let fetch_weatherForcast url =
 let print_weatherForcast ?(show_opts=show_ALL) ?(conky=false) ?(days=2) wf =
   let max_width = List.fold ~init:0 ~f:(fun a b -> Int.max a (get_string_width b.date)) wf.weathers + 6 in
   let max_unit_width = List.slice wf.weathers 0 days
-                       |> List.fold ~init:0 ~f:(fun _ w ->
+                       |> List.fold ~init:0 ~f:(fun tmax w ->
                            w.weathers
-                           |> List.fold ~init:0 ~f:(fun x y -> Int.max x (get_string_width y))) in
+                           |> List.fold ~init:tmax ~f:(fun x y -> Int.max x (get_string_width y))) in
 
   Printf.printf "%s\n" (str_repeat "-" (max_width + (max_unit_width + 1) * 8));
   let date = Time.to_date ~zone wf.updated_time in
