@@ -32,7 +32,7 @@ let fetch_weatherForcast url =
   let html = http_get url in
   let open Soup in
   let soup = parse html in
-  let point_info_and_updated_time_str = soup $ "section.section-wrap:nth-child(2) > h2:nth-child(1)" |> texts in
+  let point_info_and_updated_time_str = soup $ "#main-column > section > h2" |> texts in
   let point_info = List.nth_exn point_info_and_updated_time_str 0
   and updated_time_str = List.nth_exn point_info_and_updated_time_str 1 in
   let point_name = (Re.Pcre.extract ~rex:(Re.Pcre.regexp "(.+)の天気") point_info).(1) in
@@ -42,7 +42,7 @@ let fetch_weatherForcast url =
       (dhm.(1) |> int_of_string, dhm.(2) |> int_of_string, dhm.(3) |> int_of_string) in
     let today = Date.today ~zone in
     let (year, month) = (Date.year today, Date.month today |> Month.to_int) in
-    let time_str = Printf.sprintf "%d-%d-%d %02d:%02d" year month dd hh mm in
+    let time_str = Printf.sprintf "%d-%02d-%02d %02d:%02d" year month dd hh mm in
     Time.of_string time_str in
 
   let weathers =
