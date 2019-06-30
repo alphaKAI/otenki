@@ -83,6 +83,9 @@ let fetch_weatherForcast url =
           |> List.map ~f:(fun i ->
               let selector = selector_base ^ (" > tr:nth-child(7) > td:nth-child(%d)" %% i) in
               List.nth_exn (soup $ selector |> texts) 0
+              |> (function 
+                  | "---" -> "0"
+                  | x -> x)
               |> int_of_string) in
 
         let amount_of_rains =

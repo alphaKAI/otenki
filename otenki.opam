@@ -14,3 +14,5 @@ depends: [
   "ocamlnet"
   "re"
 ]
+synopsis: "command line Otenki viewer"
+description: "command line otenki viewer"
